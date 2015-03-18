@@ -21,8 +21,7 @@ angular.module('pdf')
     var currentPage = 1;
     var angle = 0;
     var scale = $attrs.scale ? $attrs.scale : 1;
-    var canvas = $element.find('canvas')[0];
-    var ctx = canvas.getContext('2d');
+    var canvasContainer = $element.find('div')[0];
 
     var renderPage = function(num) {
       if (!angular.isNumber(num))
@@ -31,8 +30,12 @@ angular.module('pdf')
         .getPage(num)
         .then(function(page) {
           var viewport = page.getViewport(scale);
+          var canvas = document.createElement('canvas');
+          var ctx = canvas.getContext('2d');
           canvas.height = viewport.height;
           canvas.width = viewport.width;
+          
+          canvasContainer.appendChild(canvas);
 
           var renderContext = {
             canvasContext: ctx,
@@ -43,7 +46,13 @@ angular.module('pdf')
         });
     };
 
-    var transform = function() {
+    var renderPages = function renderPages() {
+        for(var num = 1; num <= pdfDoc.numPages; num++) {
+            renderPage(num);
+        }
+    }
+
+    var transform = function(canvas) {
       canvas.style.webkitTransform = 'rotate('+ angle + 'deg)';
       canvas.style.MozTransform = 'rotate('+ angle + 'deg)';
       canvas.style.msTransform = 'rotate('+ angle + 'deg)';
@@ -118,13 +127,11 @@ angular.module('pdf')
       } else {
         docInitParams.url = url;
       }
-
       PDFJS
         .getDocument(docInitParams)
         .then(function (_pdfDoc) {
-
           pdfDoc = _pdfDoc;
-          renderPage(1);
+          renderPages();
           $scope.$apply(function() {
             $scope.pageCount = _pdfDoc.numPages;
           });

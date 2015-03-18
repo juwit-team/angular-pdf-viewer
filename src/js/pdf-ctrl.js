@@ -34,7 +34,7 @@ angular.module('pdf')
           var ctx = canvas.getContext('2d');
           canvas.height = viewport.height;
           canvas.width = viewport.width;
-          
+
           canvasContainer.appendChild(canvas);
 
           var renderContext = {
@@ -127,6 +127,10 @@ angular.module('pdf')
       } else {
         docInitParams.url = url;
       }
+
+      // get rid of old files:
+      canvasContainer.innerHTML = '';
+
       PDFJS
         .getDocument(docInitParams)
         .then(function (_pdfDoc) {

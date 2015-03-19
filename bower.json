@@ -10,14 +10,12 @@
     "pdfjs-dist": "~1.0.925"
   },
   "ignore": [
-    "src",
     ".bowerrc",
     ".gitignore",
     "bower.json",
     "gulpfile.js",
     "package.json",
     "README.md",
-    "LICENSE",
     "node_modules"
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "name": "angular-pdf-viewer",
+  "name": "angular-multi-pdf-viewer",
   "version": "0.2.5",
   "description": "An AngularJS directive to display PDFs",
   "main": [
